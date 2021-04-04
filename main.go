@@ -3,8 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"web-scene/App"
+	"web-scene/App/Services"
 	"web-scene/AppInit"
-	"web-scene/models"
 )
 
 func main() {
@@ -12,11 +13,11 @@ func main() {
 
 	v1 := router.Group("v1")
 	{
-		v1.Handle(http.MethodGet, "books", func(context *gin.Context) {
-			books := models.Books{}
-			AppInit.GetDB().Limit(10).Order("id desc").Find(&books)
-			context.JSON(http.StatusOK, books)
-		})
+		bookListHandler := App.RegisterHandler(
+			Services.BookListEndPoint(Services.NewBookService()),
+			Services.CreateBookListRequest(),
+			Services.CreateBookListResponse())
+		v1.Handle(http.MethodGet, "books", bookListHandler)
 	}
 
 	router.Run(AppInit.Address)
