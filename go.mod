@@ -1,4 +1,4 @@
-module web
+module web-scene
 
 go 1.16
 

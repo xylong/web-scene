@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
-	"web/models"
+	"web-scene/models"
 )
 
 var (
@@ -16,7 +16,7 @@ func init() {
 	var err error
 
 	db, err = gorm.Open(driver, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPassword, dbHost, database))
-	if err!=nil {
+	if err != nil {
 		log.Fatalln(err)
 	}
 

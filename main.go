@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"web/AppInit"
-	"web/models"
+	"web-scene/AppInit"
+	"web-scene/models"
 )
 
 func main() {
