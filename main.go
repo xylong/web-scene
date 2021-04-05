@@ -18,6 +18,13 @@ func main() {
 			Services.CreateBookListRequest(),
 			Services.CreateBookListResponse())
 		v1.Handle(http.MethodGet, "books", bookListHandler)
+
+		bookDetailHandler := App.RegisterHandler(
+			Services.BookDetailEndPoint(Services.NewBookService()),
+			Services.CreateBookRequest(),
+			Services.CreateBookResponse(),
+		)
+		v1.Handle(http.MethodGet, "books/:id", bookDetailHandler)
 	}
 
 	router.Run(AppInit.Address)
