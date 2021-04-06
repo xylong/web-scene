@@ -2,13 +2,18 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"io"
+	"log"
 	"net/http"
+	"os"
 	"web-scene/App"
 	"web-scene/App/Services"
 	"web-scene/AppInit"
 )
 
 func main() {
+	simpleLog()
+
 	router := gin.Default()
 
 	v1 := router.Group("v1")
@@ -28,4 +33,12 @@ func main() {
 	}
 
 	router.Run(AppInit.Address)
+}
+
+func simpleLog() {
+	logFile, err := os.OpenFile("gin-log.log", os.O_CREATE|os.O_APPEND, 666)
+	gin.DefaultWriter = io.MultiWriter(logFile)
+	if err != nil {
+		log.Fatalln("created log file failed", err.Error())
+	}
 }

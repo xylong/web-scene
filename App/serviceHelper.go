@@ -2,6 +2,7 @@ package App
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -22,6 +23,16 @@ type (
 // RegisterHandler 注册行为
 func RegisterHandler(point EndPoint, encode EncodeRequest, decode DecodeResponse) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+
+		defer func() {
+			if r := recover(); r != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{
+					"error": fmt.Sprintf("fatal error:%s", r),
+				})
+				return
+			}
+		}()
+
 		// 1.获取参数
 		req, err := encode(ctx)
 		if err != nil {
@@ -34,6 +45,7 @@ func RegisterHandler(point EndPoint, encode EncodeRequest, decode DecodeResponse
 		// 2.执行业务
 		rsp, err := point(ctx, req)
 		if err != nil {
+			fmt.Fprintln(gin.DefaultWriter, "response error", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"code":   http.StatusInternalServerError,
 				"status": "response error:" + err.Error(),

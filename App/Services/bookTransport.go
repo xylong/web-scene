@@ -10,7 +10,7 @@ import (
 func CreateBookListRequest() App.EncodeRequest {
 	return func(context *gin.Context) (any interface{}, err error) {
 		req := &BookListRequest{}
-		if err = context.BindQuery(req); err != nil {
+		if err = context.ShouldBindQuery(req); err != nil {
 			return nil, err
 		}
 
@@ -31,7 +31,7 @@ func CreateBookListResponse() App.DecodeResponse {
 func CreateBookRequest() App.EncodeRequest {
 	return func(context *gin.Context) (any interface{}, err error) {
 		req := &BookDetailRequest{}
-		if err = context.BindUri(req); err != nil {
+		if err = context.ShouldBindUri(req); err != nil {
 			return nil, err
 		}
 

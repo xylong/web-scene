@@ -1,6 +1,7 @@
 package Services
 
 import (
+	"fmt"
 	"web-scene/AppInit"
 	"web-scene/models"
 	"web-scene/pkg/helper"
@@ -27,6 +28,10 @@ func (service *BookService) GetList(request *BookListRequest) (books *models.Boo
 // GetDetail 获取图书详情
 func (service *BookService) GetDetail(request *BookDetailRequest) (book *models.Book, err error) {
 	book = &models.Book{}
-	err = AppInit.GetDB().First(book, request.ID).Error
+
+	if AppInit.GetDB().First(book, request.ID).RowsAffected != 1 {
+		err = fmt.Errorf("book:%d not exist", request.ID)
+	}
+
 	return
 }
